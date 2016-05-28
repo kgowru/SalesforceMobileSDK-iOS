@@ -159,7 +159,9 @@ static NSString * const kOAuthUserAgentUserDefaultsKey          = @"UserAgent";
     _responseData = nil;
     _scopes = nil;
     [self stopRefreshFlowConnectionTimer];
+#if !TARGET_OS_TV
     _view.delegate = nil;
+#endif
     _view = nil;
 }
 
@@ -262,7 +264,9 @@ static NSString * const kOAuthUserAgentUserDefaultsKey          = @"UserAgent";
 }
 
 - (void)stopAuthentication {
+#if !TARGET_OS_TV
     [self.view stopLoading];
+#endif
     [self.session invalidateAndCancel];
     self.session = nil;
     [self stopRefreshFlowConnectionTimer];
@@ -469,13 +473,14 @@ static NSString * const kOAuthUserAgentUserDefaultsKey          = @"UserAgent";
     }
     
     [self configureWebUserAgent];
-    
+
+#if !TARGET_OS_TV
     if (nil == self.view) {
         // lazily create web view if needed
         self.view = [[UIWebView  alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     }
     self.view.delegate = self;
-
+    
     // Ensure that the webview options match how our app wants to handle detected links
     self.view.dataDetectorTypes = UIDataDetectorTypeNone;
 
@@ -485,6 +490,7 @@ static NSString * const kOAuthUserAgentUserDefaultsKey          = @"UserAgent";
     if ([self.delegate respondsToSelector:@selector(oauthCoordinator:willBeginAuthenticationWithView:)]) {
         [self.delegate oauthCoordinator:self willBeginAuthenticationWithView:self.view];
     }
+#endif
     
     // optional query params: 
     //     state - opaque state value to be passed back
@@ -520,7 +526,9 @@ static NSString * const kOAuthUserAgentUserDefaultsKey          = @"UserAgent";
 	[request setHTTPShouldHandleCookies:NO]; // don't use shared cookies
     [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData]; // don't use cache
 	
-	[self.view loadRequest:request];
+#if !TARGET_OS_TV
+    [self.view loadRequest:request];
+#endif
 }
 
 - (void)beginTokenEndpointFlow:(SFOAuthTokenEndpointFlow)flowType {
@@ -829,6 +837,7 @@ static NSString * const kOAuthUserAgentUserDefaultsKey          = @"UserAgent";
 
 #pragma mark - UIWebViewDelegate (User-Agent Token Flow)
 
+#if !TARGET_OS_TV
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     
     if (self.credentials.logLevel < kSFOAuthLogLevelWarning) {
@@ -898,6 +907,7 @@ static NSString * const kOAuthUserAgentUserDefaultsKey          = @"UserAgent";
     }
 }
 
+#endif
 
 #pragma mark - Utilities
 

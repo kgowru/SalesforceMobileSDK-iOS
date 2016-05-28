@@ -161,7 +161,7 @@ NSString* const kTestRequestStatusDidTimeout = @"didTimeout";
 }
 
 #pragma mark - SFOAuthCoordinatorDelegate
-
+#if !TARGET_OS_TV
 - (void)oauthCoordinator:(SFOAuthCoordinator *)coordinator willBeginAuthenticationWithView:(UIWebView *)view
 {
     NSAssert(NO, @"User Agent flow not supported in this class.");
@@ -181,7 +181,7 @@ NSString* const kTestRequestStatusDidTimeout = @"didTimeout";
 {
     NSAssert(NO, @"User Agent flow not supported in this class.");
 }
-
+#endif
 - (void)oauthCoordinatorDidAuthenticate:(SFOAuthCoordinator *)coordinator authInfo:(SFOAuthInfo *)info
 {
     [self log:SFLogLevelInfo format:@"%@ with authInfo: %@", NSStringFromSelector(_cmd), info];

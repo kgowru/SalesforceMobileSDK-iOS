@@ -28,6 +28,7 @@
 
 @implementation SFAuthenticationViewHandler
 
+#if !TARGET_OS_TV
 @synthesize authViewDisplayBlock = _authViewDisplayBlock;
 @synthesize authViewDismissBlock = _authViewDismissBlock;
 
@@ -40,5 +41,6 @@
     }
     return self;
 }
+#endif
 
 @end

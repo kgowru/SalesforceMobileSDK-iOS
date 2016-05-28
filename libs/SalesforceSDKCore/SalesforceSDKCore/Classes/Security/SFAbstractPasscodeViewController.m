@@ -28,7 +28,9 @@
 #import "SFPasscodeManager.h"
 #import "SFPasscodeManager+Internal.h"
 #import "SFInactivityTimerCenter.h"
+#if !TARGET_OS_TV
 #import <LocalAuthentication/LocalAuthentication.h>
+#endif
 
 // Public constants
 NSString * const kRemainingAttemptsKey = @"remainingAttempts";
@@ -112,12 +114,17 @@ static  NSString * cachedPasscode;
 
 - (BOOL) canShowTouchId;
 {
+#if TARGET_OS_TV
+    return NO;
+#else
     LAContext *context = [[LAContext alloc] init];
     return cachedPasscode != nil && [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil];
+#endif
 }
 
 - (void) showTouchId
 {
+#if !TARGET_OS_TV
     if ([self canShowTouchId]) {
         LAContext *context = [[LAContext alloc] init];
         [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:[SFSDKResourceUtils localizedString:@"touchIdReason"] reply:^(BOOL success, NSError *authenticationError){
@@ -126,6 +133,7 @@ static  NSString * cachedPasscode;
             }
         }];
     }
+#endif
 }
 
 

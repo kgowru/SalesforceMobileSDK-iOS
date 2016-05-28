@@ -126,12 +126,13 @@ static NSString * const SFDCLoginHostListCellIdentifier = @"SFDCLoginHostListCel
 - (void)viewDidLoad {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showAddLoginHost:)];
     self.title = [SFSDKResourceUtils localizedString:@"LOGIN_CHOOSE_SERVER"];
-    
+#if !TARGET_OS_TV
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc]
                                              initWithTitle:@""
                                              style:UIBarButtonItemStylePlain
                                              target:nil
                                              action:nil];
+#endif
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelLoginPicker:)];
     
     // Make sure the current login host exists.

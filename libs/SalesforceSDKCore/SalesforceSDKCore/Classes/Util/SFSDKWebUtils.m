@@ -61,7 +61,7 @@ static NSString *gUserAgentForApp = nil;
 + (void)stageUserAgentForApp
 {
     if (gUserAgentForApp != nil) return;
-    
+#if !TARGET_OS_TV
     if ([NSThread isMainThread]) {
         // Get the current user agent.  Yes, this is hack-ish.  Alternatives are more hackish.  UIWebView
         // really doesn't want you to know about its HTTP headers.
@@ -74,6 +74,7 @@ static NSString *gUserAgentForApp = nil;
             gUserAgentForApp = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
         });
     }
+#endif
 }
 
 @end

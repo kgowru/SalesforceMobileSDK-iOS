@@ -493,6 +493,7 @@ static Class InstanceClass = nil;
 
 - (void)clearClipboard
 {
+#if !TARGET_OS_TV
     if ([SFManagedPreferences sharedPreferences].clearClipboardOnBackground) {
         [self log:SFLogLevelInfo format:@"%@: Clearing clipboard on app background.", NSStringFromSelector(_cmd)];
         [UIPasteboard generalPasteboard].strings = @[ ];
@@ -500,6 +501,7 @@ static Class InstanceClass = nil;
         [UIPasteboard generalPasteboard].images = @[ ];
         [UIPasteboard generalPasteboard].colors = @[ ];
     }
+#endif
 }
 
 - (void)passcodeValidationAtLaunch

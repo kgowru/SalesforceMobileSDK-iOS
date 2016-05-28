@@ -127,6 +127,7 @@ typedef NS_ENUM(NSUInteger, SFOAuthAdvancedAuthState) {
  
  @see SFOAuthCoordinator
  */
+#if !TARGET_OS_TV
 - (void)oauthCoordinator:(SFOAuthCoordinator *)coordinator willBeginAuthenticationWithView:(UIWebView *)view;
 
 /** Sent when the web will starts to load its content.
@@ -141,6 +142,7 @@ typedef NS_ENUM(NSUInteger, SFOAuthAdvancedAuthState) {
  @param errorOrNil  Contains the error or `nil` if no error
  */
 - (void)oauthCoordinator:(SFOAuthCoordinator *)coordinator didFinishLoad:(UIWebView *)view error:(NSError*)errorOrNil;
+#endif
 
 /**
  Sent when authentication successfully completes. Note: This method is deprecated.  You should use
@@ -198,6 +200,7 @@ typedef NS_ENUM(NSUInteger, SFOAuthAdvancedAuthState) {
 
 @required
 
+#if !TARGET_OS_TV
 /** Sent after authentication has begun and the view parameter is displaying the first page of authentication content.
  
  The delegate will receive this message when the first page of the authentication flow is visible in the view parameter. 
@@ -211,6 +214,7 @@ typedef NS_ENUM(NSUInteger, SFOAuthAdvancedAuthState) {
  @see SFOAuthCoordinator
  */
 - (void)oauthCoordinator:(SFOAuthCoordinator *)coordinator didBeginAuthenticationWithView:(UIWebView *)view;
+#endif
 
 @end
 
@@ -225,8 +229,14 @@ typedef NS_ENUM(NSUInteger, SFOAuthAdvancedAuthState) {
  the Security framework and either the NSJSONSerialization iOS 5.0 SDK class 
  or the third party SBJsonParser class.
  */
+#if TARGET_OS_TV
+@interface SFOAuthCoordinator : NSObject {
+    
+}
+#else
 @interface SFOAuthCoordinator : NSObject <UIWebViewDelegate> {
 }
+#endif
 
 /** User credentials to use within the authentication process.
  
@@ -285,7 +295,11 @@ typedef NS_ENUM(NSUInteger, SFOAuthAdvancedAuthState) {
  This is only guaranteed to be non-`nil` after one of the delegate methods returning a web view has been called.
  @see SFOAuthCoordinatorDelegate
  */
+#if TARGET_OS_TV
+@property (nonatomic, readonly) UIView *view;
+#else
 @property (nonatomic, readonly) UIWebView *view;
+#endif
 
 /**
  The user agent string that will be used for authentication.  While this property will persist throughout

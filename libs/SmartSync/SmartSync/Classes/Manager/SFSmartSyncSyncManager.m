@@ -56,7 +56,11 @@ typedef void (^SyncFailBlock) (NSString* message, NSError* error);
 @interface SFSmartSyncSyncManager () <SFAuthenticationManagerDelegate>
 
 @property (nonatomic, strong) SFSmartStore *store;
+#if TARGET_OS_TV
+@property (nonatomic, assign) dispatch_queue_t queue;
+#else
 @property (nonatomic, strong) dispatch_queue_t queue;
+#endif
 @property (nonatomic, strong) NSMutableSet *runningSyncIds;
 
 @end

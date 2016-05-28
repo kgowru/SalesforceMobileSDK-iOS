@@ -11,8 +11,10 @@
 #include <net/if_dl.h>
 #import <mach/mach.h>
 
+#if !TARGET_OS_TV
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
+#endif
 
 #import "UIDevice+SFHardware.h"
 #import "UIScreen+SFAdditions.h"
@@ -434,6 +436,7 @@
     return outstring;
 }
 
+#if !TARGET_OS_TV
 - (UIInterfaceOrientation)interfaceOrientation {
     UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
     UIInterfaceOrientation orientation = (UIInterfaceOrientation)deviceOrientation;
@@ -442,6 +445,7 @@
     }
     return orientation;
 }
+#endif
 
 - (BOOL)isSimulator {
     NSString *platform = [self platform];
@@ -462,6 +466,9 @@
 #pragma mark - 
 
 - (BOOL)canDevicePlaceAPhoneCall {
+#if TARGET_OS_TV
+    return NO;
+#else
     BOOL canPlaceCall = NO;
     // Check if the device can place a phone call
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel://"]]) {
@@ -472,6 +479,7 @@
         canPlaceCall = [mnc length] != 0;
     }
     return canPlaceCall;
+#endif
 }
 
 @end

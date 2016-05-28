@@ -109,6 +109,7 @@
     [self completeWithError:error];
 }
 
+#if !TARGET_OS_TV
 - (void)oauthCoordinator:(SFOAuthCoordinator *)coordinator didBeginAuthenticationWithView:(UIWebView *)view {
     // Shouldn't happen (refreshSessionWithCompletion:error: is guarded by the presence of a refresh token), but....
     NSString *errorString = [NSString stringWithFormat:@"%@: User Agent flow not supported for token refresh.", NSStringFromClass([self class])];
@@ -118,5 +119,6 @@
     [coordinator stopAuthentication];
     [self completeWithError:error];
 }
+#endif
 
 @end

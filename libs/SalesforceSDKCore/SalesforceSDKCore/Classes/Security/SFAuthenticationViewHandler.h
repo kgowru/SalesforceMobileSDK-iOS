@@ -27,6 +27,8 @@
 
 @class SFAuthenticationManager;
 
+#if !TARGET_OS_TV
+
 /**
  Block definition for displaying the auth view.
  */
@@ -45,6 +47,7 @@ typedef void (^SFAuthViewDismissBlock)(SFAuthenticationManager *);
 /**
  The block used to display the auth view.
  */
+
 @property (nonatomic, copy) SFAuthViewDisplayBlock authViewDisplayBlock;
 
 /**
@@ -60,3 +63,5 @@ typedef void (^SFAuthViewDismissBlock)(SFAuthenticationManager *);
 - (id)initWithDisplayBlock:(SFAuthViewDisplayBlock)displayBlock dismissBlock:(SFAuthViewDismissBlock)dismissBlock;
 
 @end
+
+#endif

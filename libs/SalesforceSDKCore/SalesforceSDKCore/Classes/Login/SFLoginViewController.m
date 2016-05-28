@@ -106,7 +106,9 @@
     self.navBar.tintColor = [UIColor whiteColor];
     [self styleNavigationBar:self.navBar];
     [self.view addSubview:self.navBar];
+#if !TARGET_OS_TV
     [self setNeedsStatusBarAppearanceUpdate];
+#endif
 }
 
 - (void)setupBackButton {
@@ -225,7 +227,7 @@
 
 - (void)showHostListView {
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.loginHostListViewController];
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:navController animated:YES completion:nil];
 }
 

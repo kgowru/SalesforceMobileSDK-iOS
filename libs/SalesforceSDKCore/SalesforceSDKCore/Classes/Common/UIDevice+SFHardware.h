@@ -173,7 +173,9 @@ typedef NS_ENUM(NSUInteger, UIDeviceFamily) {
 /**Device's current orientation
  This method will first try to retrieve orientation using UIDevice currentOrientation, if return value is an invalid orientation, it will try to use status bar orientation as fallback
  */
+#if !TARGET_OS_TV
 - (UIInterfaceOrientation)interfaceOrientation;
+#endif
 
 /**
  *  Determine if current device is simulator or not

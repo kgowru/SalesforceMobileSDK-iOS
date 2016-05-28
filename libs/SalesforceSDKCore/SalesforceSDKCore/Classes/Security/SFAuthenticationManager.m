@@ -190,7 +190,9 @@ static NSString * const kAlertVersionMismatchErrorKey = @"authAlertVersionMismat
  Method to present the authorizing view controller with the given auth webView.
  @param webView The auth webView to present.
  */
+#if !TARGET_OS_TV
 - (void)presentAuthViewController:(UIWebView *)webView;
+#endif
 
 /**
  Dismisses the auth view controller, resetting the UI state back to its original
@@ -309,6 +311,7 @@ static Class InstanceClass = nil;
         
         // Default auth web view handler
         __weak SFAuthenticationManager *weakSelf = self;
+#if !TARGET_OS_TV
         self.authViewHandler = [[SFAuthenticationViewHandler alloc]
                                 initWithDisplayBlock:^(SFAuthenticationManager *authManager, UIWebView *authWebView) {
                                     if (weakSelf.authViewController == nil)
@@ -319,6 +322,7 @@ static Class InstanceClass = nil;
                                     [SFLoginViewController sharedInstance].oauthView = nil;
                                     [weakSelf dismissAuthViewControllerIfPresent];
                                 }];
+#endif
         
         [[SFUserAccountManager sharedInstance] addDelegate:self];
         
@@ -828,6 +832,7 @@ static Class InstanceClass = nil;
    [self.statusAlert dismissViewControllerAnimated:NO completion:nil];
 }
 
+#if !TARGET_OS_TV
 - (void)presentAuthViewController:(UIWebView *)webView
 {
     if (![NSThread isMainThread]) {
@@ -842,6 +847,7 @@ static Class InstanceClass = nil;
     [self.authViewController setOauthView:webView];
     [[SFRootViewManager sharedManager] pushViewController:self.authViewController];
 }
+#endif
 
 - (void)dismissAuthViewControllerIfPresent
 {
@@ -1013,7 +1019,9 @@ static Class InstanceClass = nil;
     if (!errorHandled) {
         // No error handlers could handle the error.  Pass through to the error blocks.
         if (info.authType == SFOAuthTypeUserAgent)
+#if !TARGET_OS_TV
             self.authViewHandler.authViewDismissBlock(self);
+#endif
         [self execFailureBlocks];
     }
 }
@@ -1062,7 +1070,7 @@ static Class InstanceClass = nil;
 }
 
 #pragma mark - SFOAuthCoordinatorDelegate
-
+#if !TARGET_OS_TV
 - (void)oauthCoordinator:(SFOAuthCoordinator *)coordinator willBeginAuthenticationWithView:(UIWebView *)view
 {
     [self log:SFLogLevelDebug msg:@"oauthCoordinator:willBeginAuthenticationWithView:"];
@@ -1113,6 +1121,7 @@ static Class InstanceClass = nil;
         self.authViewHandler.authViewDisplayBlock(self, view);
     }
 }
+#endif
 
 - (void)oauthCoordinatorWillBeginAuthentication:(SFOAuthCoordinator *)coordinator authInfo:(SFOAuthInfo *)info {
     [self enumerateDelegates:^(id<SFAuthenticationManagerDelegate> delegate) {
@@ -1126,10 +1135,12 @@ static Class InstanceClass = nil;
 {
     [self log:SFLogLevelDebug format:@"oauthCoordinatorDidAuthenticate for userId: %@, auth info: %@", coordinator.credentials.userId, info];
     self.authInfo = info;
-    
+
+#if !TARGET_OS_TV
     dispatch_async(dispatch_get_main_queue(), ^{
         self.authViewHandler.authViewDismissBlock(self);
     });
+#endif
     
     [self enumerateDelegates:^(id<SFAuthenticationManagerDelegate> delegate) {
         if ([delegate respondsToSelector:@selector(authManagerDidAuthenticate:credentials:authInfo:)]) {
