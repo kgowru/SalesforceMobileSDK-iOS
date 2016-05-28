@@ -1,14 +1,14 @@
 Pod::Spec.new do |s|
 
   s.name         = "SalesforceRestAPI"
-  s.version      = "4.1.2"
+  s.version      = "4.3.0"
   s.summary      = "Salesforce Mobile SDK for iOS - SalesforceRestAPI"
   s.homepage     = "https://github.com/forcedotcom/SalesforceMobileSDK-iOS"
 
   s.license      = { :type => "Salesforce.com Mobile SDK License", :file => "LICENSE.md" }
   s.author       = { "Kevin Hawkins" => "khawkins@salesforce.com" }
 
-  s.platform     = :ios, "8.0"
+  s.platform     = :tvos, "9.2"
 
   s.source       = { :git => "https://github.com/forcedotcom/SalesforceMobileSDK-iOS.git",
                      :tag => "pod_v#{s.version}",
