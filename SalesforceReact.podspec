@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SalesforceReact"
-  s.version      = "4.3.0"
+  s.version      = "4.1.2"
   s.summary      = "Salesforce Mobile SDK for iOS - SalesforceReact"
   s.homepage     = "https://github.com/forcedotcom/SalesforceMobileSDK-iOS"
 
@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/forcedotcom/SalesforceMobileSDK-iOS.git",
                      :tag => "pod_v#{s.version}",
                      :submodules => true }
-  
+
   s.requires_arc = true
   s.default_subspec  = 'SalesforceReact'
 
